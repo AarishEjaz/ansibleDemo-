@@ -1,0 +1,21 @@
+---
+- name: Installing Nginx
+  hosts: webservers
+  become: true # this will give you sudo mode access 
+
+  tasks:
+    - name: installing ansible 
+      yum:
+        name: nginx
+        state: present #if nginx is already installed it won't install it again 
+      
+    - name: start nginx
+      service: 
+        name: nginx
+        state: started
+        enabled: true 
+
+    - name: install cronjob
+      yum: 
+         name: cronie
+         state: present

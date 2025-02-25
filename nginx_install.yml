@@ -1,5 +1,5 @@
 ---
-- name: Installing Nginx
+- name: Installing Nginx and configuring 
   hosts: webservers
   become: true # this will give you sudo mode access 
 

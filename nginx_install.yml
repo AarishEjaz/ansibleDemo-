@@ -1,13 +1,43 @@
 ---
 - name: Installing Nginx and configuring 
-  hosts: webservers
+  hosts: all
   become: true # this will give you sudo mode access 
 
+  vars: 
+    package_name: 
+      Ubuntu: apache2
+      Amazon: httpd
+
+
   tasks:
-    - name: installing ansible 
+    - name: Printing OS versions
+      debug:
+        msg: "This OS is {{ ansible_distribution }}"
+
+    - name: Installing apache webserver
+      yum:
+        name: "{{ package_name['Amazon'] }}" 
+        state: present
+      when: ansible_distribution == "Amazon"
+
+    - name: Installing apache webserver
+      apt:
+        name: "{{ package_name['Ubuntu'] }}" 
+        state: present
+      when: ansible_distribution == "Ubuntu"
+
+
+    - name: installing Nginx AL2
       yum:
         name: nginx
         state: present #if nginx is already installed it won't install it again 
+      when: ansible_distribution == "Amazon"
+
+    - name: installing Nginx Ubuntu
+      apt:
+        name: nginx
+        state: present #if nginx is already installed it won't install it again 
+      when: ansible_distribution == "Ubuntu"
       
     - name: start nginx
       service: 

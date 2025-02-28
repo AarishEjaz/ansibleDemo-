@@ -1,0 +1,34 @@
+---
+- name: Launch ec2 instance and install XX
+  hosts: localhost
+  gather_facts: no
+
+  tasks:
+    - name: adding SSH access to security group 
+      amazon.aws.ec2_group:
+        name: default
+        description: security group for ec2 instances
+        region: ap-south-1
+        rules: 
+          - proto: tcp
+            from_port: 8080
+            to_port: 8080
+            cidr_ip: 0.0.0.0/0
+          - proto: tcp
+            from_port: 22
+            to_port: 22
+            cidr_ip: 0.0.0.0/0
+        rules_egress:
+          - proto: all
+            cidr_ip: 0.0.0.0/0
+      register: security_group
+
+    - name: Launch instance
+      amazon.aws.ec2_instance: 
+        name: Ansible-created-instance
+        key_name: ansible3
+        region: ap-south-1
+        instance_type: t2.micro
+        image_id: ami-0d682f26195e9ec0f
+        count: 1
+      register: ec2

@@ -26,7 +26,7 @@
 
   - name: Launch Ec2 instance
     amazon.aws.ec2_instance:
-      name: Ansible_created_instance
+      name: Ansible-created-instance
       key_name: ansible3
       image_id: ami-0f2ce9ce760bd7133
       region: ap-south-1

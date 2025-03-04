@@ -1,0 +1,15 @@
+---
+- name: for copying aws_key
+  hosts: amazon
+  become: yes
+  vars:
+    app_name: devOps
+
+  vars_files: 
+    - "secret.yml"
+
+  tasks:
+   - name: Copy the db password
+     copy: 
+      content: "db_password: {{ db_password }}"
+      dest: "/etc/{{ app_name }}_db_password.txt"
